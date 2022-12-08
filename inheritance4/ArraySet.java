@@ -1,4 +1,6 @@
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public class ArraySet<T> implements Iterable<T> {
     private T[] items;
@@ -7,6 +9,10 @@ public class ArraySet<T> implements Iterable<T> {
     public ArraySet() {
         items = (T[]) new Object[100];
         size = 0;
+    }
+
+    public static class Temp {
+        static int a = 1;
     }
 
     /* Returns true if this map contains a mapping for the specified key.
@@ -38,7 +44,10 @@ public class ArraySet<T> implements Iterable<T> {
         return size;
     }
 
-    /** returns an iterator (a.k.a. seer) into ME */
+    /**
+     * returns an iterator (a.k.a. seer) into ME
+     */
+    @Override
     public Iterator<T> iterator() {
         return new ArraySetIterator();
     }
@@ -50,10 +59,12 @@ public class ArraySet<T> implements Iterable<T> {
             wizPos = 0;
         }
 
+        @Override
         public boolean hasNext() {
             return wizPos < size;
         }
 
+        @Override
         public T next() {
             T returnItem = items[wizPos];
             wizPos += 1;
@@ -61,16 +72,29 @@ public class ArraySet<T> implements Iterable<T> {
         }
     }
 
+//    @Override
+//    public String toString() {
+//        StringBuilder returnSB = new StringBuilder("{");
+//        for (int i = 0; i < size - 1; i += 1) {
+//            returnSB.append(items[i].toString());
+//            returnSB.append(", ");
+//        }
+//        returnSB.append(items[size - 1]);
+//        returnSB.append("}");
+//        return returnSB.toString();
+//    }
+
     @Override
     public String toString() {
-        StringBuilder returnSB = new StringBuilder("{");
-        for (int i = 0; i < size - 1; i += 1) {
-            returnSB.append(items[i].toString());
-            returnSB.append(", ");
+        StringBuilder output = new StringBuilder("{");
+
+        for (int i = 0; i < size; i += 1) {
+            output.append(items[i].toString());
+            if(i != size - 1)
+                output.append(",");
         }
-        returnSB.append(items[size - 1]);
-        returnSB.append("}");
-        return returnSB.toString();
+        output.append("}");
+        return output.toString();
     }
 
     /* EXTRA VIDEO CODE
@@ -117,18 +141,35 @@ public class ArraySet<T> implements Iterable<T> {
     }
 
     public static void main(String[] args) {
+
+        ArraySet<String> citySet = new ArraySet<>();
+
+        citySet.add("Seoul");
+        citySet.add("San Francisco");
+        citySet.add("Los Angeles");
+        citySet.add("Washington DC");
+        citySet.add("Seoul");
+
+        System.out.println(citySet);
+
+        for (String str : citySet)
+            System.out.println(str);
+
+        try {
+            citySet.add(null);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+        }
+
+        System.out.println(citySet);
+
+        System.out.println();
+
         ArraySet<Integer> aset = new ArraySet<>();
         aset.add(5);
         aset.add(23);
         aset.add(42);
 
-        //iteration
-        for (int i : aset) {
-            System.out.println(i);
-        }
-
-        //toString
-        System.out.println(aset);
 
         //equals
         ArraySet<Integer> aset2 = new ArraySet<>();
@@ -144,6 +185,8 @@ public class ArraySet<T> implements Iterable<T> {
         //EXTRA VIDEO CODE
         //ArraySet<String> asetOfStrings = ArraySet.of("hi", "I'm", "here");
         //System.out.println(asetOfStrings);
+
+        System.out.println(Temp.a);
     }
 
     /* Also to do:
